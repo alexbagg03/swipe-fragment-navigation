@@ -3,10 +3,12 @@ package com.abagg.swipefragmentnavigation
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.view.PagerAdapter
 import android.view.ViewGroup
 import java.util.*
 
-class NavigationFragmentPagerAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
+class NavigationFragmentPagerAdapter(private val fragmentManager: FragmentManager)
+    : FragmentPagerAdapter(fragmentManager) {
 
     private val fragmentStack: Stack<Fragment> = Stack()
 
@@ -23,9 +25,10 @@ class NavigationFragmentPagerAdapter(fragmentManager: FragmentManager) : Fragmen
         return if (fragment != null) fragment.javaClass.simpleName else ""
     }
 
-//    override fun destroyItem(container: ViewGroup, position: Int, obj: Any) {
-//        val fragmentManager = (Fragment) obj
-//    }
+    override fun getItemPosition(`object`: Any): Int {
+        val index = fragmentStack.indexOf(`object`)
+        return if (index == -1) PagerAdapter.POSITION_NONE else index
+    }
 
     fun push(fragment: Fragment) {
         fragmentStack.push(fragment)
